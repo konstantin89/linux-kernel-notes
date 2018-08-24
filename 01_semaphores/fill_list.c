@@ -4,16 +4,17 @@
 #include <linux/module.h>
 #include <linux/list.h>
 #include <linux/sched.h>
-
-
 #include "fill_list.h"
 
+//Number of elements inserted by each thread into list
 #define FILLER_ITERATIONS 5
+
+//Sleep duration between list insertions
 #define USECS_BETWEEN_INSERTIONS 10
 
 static ListEntry g_list;
-static struct semaphore g_sem;
 static ThreadArr g_thread_arr;
+static struct semaphore g_sem;
 
 static int clean_thread_arr(void);
 static int clean_entry_list(void);
@@ -25,27 +26,28 @@ int init_fill_list(void)
     sema_init(&g_sem, 1);
     INIT_LIST_HEAD(&g_list.list);
 
-    return 0;
+    return FL_SUCCESS_CODE;
 }
+
 
 int clean_fill_list(void)
 {
     clean_entry_list();
     clean_thread_arr();
 
-    return 0;
+    return FL_SUCCESS_CODE;
 }
+
 
 int start(int thread_count)
 {
     int index = 0;
 
     g_thread_arr.arr = kmalloc(sizeof(struct task_struct*) * thread_count, GFP_KERNEL);
-
     if(g_thread_arr.arr == NULL)
     {
         printk(KERN_ERR "[X] semaphore_example kmalloc failed");
-        return 1;
+        return FL_ERROR_CODE;
     }
 
     for(index=0; index<thread_count; index++)
@@ -54,8 +56,9 @@ int start(int thread_count)
         g_thread_arr.arr[index] = kthread_run(filler_func, NULL, "filler_thread");
     }
 
-    return 0;
+    return FL_SUCCESS_CODE;
 }
+
 
 int print_list(void)
 {
@@ -73,8 +76,9 @@ int print_list(void)
 
     up(&g_sem);
 
-    return 0;
+    return FL_SUCCESS_CODE;
 }
+
 
 static int filler_func(void* arg)
 {
@@ -91,8 +95,7 @@ static int filler_func(void* arg)
         if (IS_ERR(newEntry)) 
         {
             printk(KERN_ERR "[X] semaphore_example kmalloc failed");
-            
-            /* HANDLE ERROR */
+            continue;
         }
 
         INIT_LIST_HEAD(&newEntry->list);
@@ -102,8 +105,9 @@ static int filler_func(void* arg)
         up(&g_sem);
     }
 
-    return 0;
+    return FL_SUCCESS_CODE;
 }
+
 
 static int clean_thread_arr(void)
 {
@@ -117,7 +121,7 @@ static int clean_thread_arr(void)
 
     kfree(g_thread_arr.arr);
     g_thread_arr.arr = NULL;
-    return 0;
+    return FL_SUCCESS_CODE;
 }
 
 static int clean_entry_list(void)
@@ -136,5 +140,5 @@ static int clean_entry_list(void)
 
     up(&g_sem);
 
-    return 0;
+    return FL_SUCCESS_CODE;
 }
