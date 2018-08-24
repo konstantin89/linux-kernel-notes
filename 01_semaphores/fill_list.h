@@ -23,3 +23,4 @@ int clean_fill_list(void);
 
 int start(int thread_count);
 
+int print_list(void);

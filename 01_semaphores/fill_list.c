@@ -32,7 +32,7 @@ int clean_fill_list(void)
 {
     clean_entry_list();
     clean_thread_arr();
-    
+
     return 0;
 }
 
@@ -52,6 +52,25 @@ int start(int thread_count)
     {
         g_thread_arr.arr[index] = kthread_run(filler_func, NULL, NULL);
     }
+
+    return 0;
+}
+
+int print_list(void)
+{
+    struct list_head* node;
+    struct list_head* temp_node;
+    ListEntry* curr;
+
+    down_interruptible(g_sem);
+
+    list_for_each_safe(node, temp_node, &g_list.list)
+    {
+        curr = list_entry(node, struct ListEntry, list);
+        printk(KERN_ERR "[ ] semaphore_example producer_tid=[%d]", curr->producer_tid);
+    }
+
+    up(g_sem);
 
     return 0;
 }
@@ -107,11 +126,15 @@ static int clean_entry_list(void)
     struct list_head* temp_node;
     ListEntry* curr;
 
+    down_interruptible(g_sem);
+
     list_for_each_safe(node, temp_node, &g_list.list)
     {
         curr = list_entry(node, struct ListEntry, list);
         list_del(&curr->list);
     }
+
+    up(g_sem);
 
     return 0;
 }

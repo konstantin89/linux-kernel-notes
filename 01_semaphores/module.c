@@ -23,8 +23,10 @@ static int __init init(void)
 
     msleep(1000 * 3);
 
-    printk(KERN_INFO "[ ] semaphore_example clean_fill_list started");
+    printk(KERN_INFO "[ ] semaphore_example print_list started");
+    print_list();
 
+    printk(KERN_INFO "[ ] semaphore_example clean_fill_list started");
     clean_fill_list();
 
     printk(KERN_INFO "[ ] semaphore_example init done");
