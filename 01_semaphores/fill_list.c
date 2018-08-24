@@ -51,7 +51,7 @@ int start(int thread_count)
     for(index=0; index<thread_count; index++)
     {
         printk(KERN_INFO "[ ] semaphore_example starting [%d] thread", index);
-        g_thread_arr.arr[index] = kthread_run(filler_func, NULL, NULL);
+        g_thread_arr.arr[index] = kthread_run(filler_func, NULL, "filler_thread");
     }
 
     return 0;
