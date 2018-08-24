@@ -40,7 +40,7 @@ int start(int thread_count)
 {
     int index = 0;
 
-    g_thread_arr.arr = kmalloc(sizeof(struct task_struct)*thread_count, GFP_KERNEL);
+    g_thread_arr.arr = kmalloc(sizeof(struct task_struct*) * thread_count, GFP_KERNEL);
 
     if(g_thread_arr.arr == NULL)
     {
@@ -50,6 +50,7 @@ int start(int thread_count)
 
     for(index=0; index<thread_count; index++)
     {
+        printk(KERN_INFO "[ ] semaphore_example starting [%d] thread", index);
         g_thread_arr.arr[index] = kthread_run(filler_func, NULL, NULL);
     }
 
@@ -67,7 +68,7 @@ int print_list(void)
     list_for_each_safe(node, temp_node, &g_list.list)
     {
         curr = list_entry(node, struct ListEntry, list);
-        printk(KERN_ERR "[ ] semaphore_example producer_tid=[%d]", curr->producer_tid);
+        printk(KERN_INFO "[ ] semaphore_example producer_tid=[%d]", curr->producer_tid);
     }
 
     up(&g_sem);
@@ -110,13 +111,12 @@ static int clean_thread_arr(void)
 
     for(index=0; index < g_thread_arr.size; index++)
     {
-        if(g_thread_arr.arr[index])
-        kthread_stop(g_thread_arr.arr[index]);
+        if(g_thread_arr.arr[index] != NULL)
+            kthread_stop(g_thread_arr.arr[index]);
     }
 
-    kfree(g_thread_arr.arr[index]);
-    g_thread_arr.arr[index] = NULL;
-
+    kfree(g_thread_arr.arr);
+    g_thread_arr.arr = NULL;
     return 0;
 }
 

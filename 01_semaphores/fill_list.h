@@ -14,7 +14,7 @@ typedef struct ListEntry
 typedef struct ThreadArr
 {
     size_t size;
-    struct task_struct**  arr;
+    struct task_struct** arr;
 } ThreadArr;
 
 int init_fill_list(void);
