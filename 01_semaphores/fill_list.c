@@ -12,7 +12,7 @@
 #define USECS_BETWEEN_INSERTIONS 10
 
 static ListEntry g_list;
-static struct semaphore *g_sem;
+static struct semaphore g_sem;
 static ThreadArr g_thread_arr;
 
 static int clean_thread_arr(void);
@@ -22,7 +22,7 @@ static int filler_func(void* arg);
 
 int init_fill_list(void)
 {
-    sema_init(g_sem, 1);
+    sema_init(&g_sem, 1);
     INIT_LIST_HEAD(&g_list.list);
 
     return 0;
@@ -62,7 +62,7 @@ int print_list(void)
     struct list_head* temp_node;
     ListEntry* curr;
 
-    down_interruptible(g_sem);
+    down_interruptible(&g_sem);
 
     list_for_each_safe(node, temp_node, &g_list.list)
     {
@@ -70,7 +70,7 @@ int print_list(void)
         printk(KERN_ERR "[ ] semaphore_example producer_tid=[%d]", curr->producer_tid);
     }
 
-    up(g_sem);
+    up(&g_sem);
 
     return 0;
 }
@@ -84,7 +84,7 @@ static int filler_func(void* arg)
     {
         udelay(USECS_BETWEEN_INSERTIONS);
 
-        down_interruptible(g_sem);
+        down_interruptible(&g_sem);
 
         newEntry = kmalloc(sizeof (struct ListEntry), GFP_KERNEL);
         if (IS_ERR(newEntry)) 
@@ -98,7 +98,7 @@ static int filler_func(void* arg)
         newEntry->producer_tid = current->pid;
         list_add_tail(&newEntry->list, &g_list.list);
 
-        up(g_sem);
+        up(&g_sem);
     }
 
     return 0;
@@ -126,7 +126,7 @@ static int clean_entry_list(void)
     struct list_head* temp_node;
     ListEntry* curr;
 
-    down_interruptible(g_sem);
+    down_interruptible(&g_sem);
 
     list_for_each_safe(node, temp_node, &g_list.list)
     {
@@ -134,7 +134,7 @@ static int clean_entry_list(void)
         list_del(&curr->list);
     }
 
-    up(g_sem);
+    up(&g_sem);
 
     return 0;
 }
