@@ -4,13 +4,28 @@
 
 [Linux Kernel Modules](lkm/README.md)
 
+</br>
+
+## References
+
+[Driver references](https://github.com/niekiran/linux-device-driver-1)
+
+</br>
+
 ## Commands
 
 ``` bash
 
 [uname -r] : Check the kernel version of the running host
 
+[sudo dmesg] : View kernel log messages
+
+[sudo insmod main.ko] : Install kernel module
+
+
 ```
+
+</br>
 
 ## Cloning kernel sources
 

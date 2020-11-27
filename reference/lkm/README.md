@@ -36,6 +36,7 @@ The exit function should be static and should be marked with the
 
 ### Hello World module example
 
+main.cpp
 ``` C
 
 #include<linux/module.h>
@@ -60,6 +61,21 @@ MODULE_DESCRIPTION("A simple hello world kernel module");
 
 ```
 
+Makefile
+```
+obj-m := main.o
+
+all:
+	make -C /usr/lib/modules/4.19.0-12-amd64/build M=$(PWD) modules
+
+clean:
+	make -C /usr/lib/modules/4.19.0-12-amd64/build M=$(PWD) clean
+
+```
+
+Run "sudo insmod main.ko" to insntall the generated kernel module.
+Then run "sudo dmesg" to view the kernel logs to find "Hello world".
+
 </br>
 
 ## Compiling kernel modules
@@ -80,7 +96,9 @@ MODULE_DESCRIPTION("A simple hello world kernel module");
 
 ![](img/module_makefile_2.PNG)
 
+![](img/make_syntax.PNG)
+
+![](img/make_syntax_targets.PNG)
+
 
 </br>
-
-
