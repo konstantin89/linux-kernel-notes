@@ -23,6 +23,10 @@
 
 [sudo insmod main.ko] : Install kernel module
 
+[sudo rmmod main.ko] : Uninstall kernel module
+
+[nm main.ko] : List symbols of object file
+
 
 ```
 
@@ -41,3 +45,31 @@ the `rpi-4.19.y` branch from RaspPi   kernel repo.
 git clone -b rpi-4.19.y --depth 1 https://github.com/raspberrypi/linux --single-branch
 
 ```
+
+</br>
+
+## Linux Utilities
+
+### nm utilitiy
+
+nm utility can be used to list symbols of an object file.
+
+``` bash
+debian@debian:~/kernel/hello_world$ nm main.ko
+0000000000000000 T cleanup_module
+                 U __fentry__
+0000000000000000 t helloworld_cleanup
+0000000000000000 t helloworld_init
+0000000000000000 T init_module
+0000000000000000 r __module_depends
+0000000000000000 r _note_6
+                 U printk
+0000000000000000 D __this_module
+0000000000000015 r __UNIQUE_ID_name45
+0000000000000009 r __UNIQUE_ID_retpoline46
+000000000000001f r __UNIQUE_ID_vermagic44
+0000000000000000 r ____versions
+
+```
+
+</br>

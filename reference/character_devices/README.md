@@ -68,4 +68,35 @@ Their minor device numbers are different.
 
 ## Device numbers represantation
 
-![](img/device_number_represantationn.PNG)
+![](img/device_number_represantation.PNG)
+
+</br>
+
+## CDEV structure
+
+![](img/cdev.PNG)
+
+cdev_add API is used to add a character device to the system.
+
+![](img/cdev_add.PNG)
+
+</br>
+
+## VFS operations
+
+![](img/vfs_operations.PNG)
+
+</br>
+
+## Creating device files
+
+![](img/device_file.PNG)
+
+![](img/udev.PNG)
+
+![](img/device_file_2.PNG)
+
+![](img/device_file_3.PNG)
+
+![](img/device_create.PNG)
+
