@@ -100,3 +100,55 @@ cdev_add API is used to add a character device to the system.
 
 ![](img/device_create.PNG)
 
+</br>
+
+## Read Operation
+
+![](img/read_operation.PNG)
+
+![](img/read_operation_steps.PNG)
+
+Copy data from and to user space in kernel space should be done by  specific API calls.  
+![](img/copy_to_user.PNG)
+
+![](img/copy_to_user_2.PNG)
+
+![](img/copy_from_user_3.PNG)
+
+</br>
+
+## Error codes
+
+![](img/error_codes.PNG)
+
+</br>
+
+## Write operation
+
+![](img/write_operation.PNG)
+
+![](img/write_operation_2.PNG)
+
+## Using/Testing device
+
+Character devices can be used from command line.
+
+To write to the char device `echo` can be used:
+
+``` bash
+echo "content to write" > /dev/pcd
+```
+
+Another way of writing data to the char device is copying  
+file into the device:
+
+``` bash
+cp FILE_PATH /dev/pcd
+```
+
+To read from the char device `cat` can be used:
+
+``` bash
+cat /dev/pcd
+```
+
