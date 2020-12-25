@@ -1,6 +1,13 @@
 # Character device drivers
 
-##
+## Example
+
+The example device driver for this chapter is located under  
+code_examples/pseudo_character_device directory.  
+
+</br>
+
+## Intro
 
 ![](img/device_types.PNG)
 

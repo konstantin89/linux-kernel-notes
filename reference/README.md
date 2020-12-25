@@ -2,8 +2,10 @@
 
 ## Chapters
 
-[Linux Kernel Modules](lkm/README.md)  
-[Character device drivers](character_devices/README.md)
+[Linux Kernel Modules](lkm/README.md)   
+[Character device drivers](character_devices/README.md)  
+[Driver with multiple devices](driver_with_multiple_devices/README.md)  
+
 
 </br>
 
