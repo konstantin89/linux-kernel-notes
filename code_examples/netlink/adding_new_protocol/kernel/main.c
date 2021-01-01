@@ -17,13 +17,17 @@ static void hello_nl_recv_msg(struct sk_buff *skb)
     char *msg="Hello from kernel";
     int res;
 
-    printk(KERN_INFO "hello_nl_recv_msg - netlink data handler called \n");
+    // Printing the PID and name of the userspace process who sent data.
+    printk(KERN_INFO "netlink data handler called, caller pid: [%d], caller name: [%s] \n", 
+        current->pid, current->comm);
 
-
-    msg_size=strlen(msg);
+    msg_size = strlen(msg);
 
     nlh=(struct nlmsghdr*)skb->data;
-    printk(KERN_INFO "Netlink received msg payload:%s\n",(char*)nlmsg_data(nlh));
+
+    printk(KERN_INFO "Netlink received msg payload: [%s] \n",
+        (char*)nlmsg_data(nlh));
+
     pid = nlh->nlmsg_pid; /*pid of sending process */
 
     skb_out = nlmsg_new(msg_size,0);
@@ -35,11 +39,14 @@ static void hello_nl_recv_msg(struct sk_buff *skb)
         return;
 
     } 
+
     nlh=nlmsg_put(skb_out,0,0,NLMSG_DONE,msg_size,0);  
+
     NETLINK_CB(skb_out).dst_group = 0; /* not in mcast group */
+
     strncpy(nlmsg_data(nlh),msg,msg_size);
 
-    res=nlmsg_unicast(nl_sk,skb_out,pid);
+    res = nlmsg_unicast(nl_sk,skb_out,pid);
 
     if(res<0)
     {
@@ -72,7 +79,7 @@ static int __init hello_init(void)
 
 static void __exit hello_exit(void) 
 {
-    printk(KERN_INFO "exiting hello module\n");
+    printk(KERN_INFO "Unloading hello module\n");
     netlink_kernel_release(nl_sk);
 }
 
