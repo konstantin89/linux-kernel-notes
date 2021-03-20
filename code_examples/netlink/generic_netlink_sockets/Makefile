@@ -5,6 +5,7 @@ all: kernel-module-uninstall kernel-clean-ring-buffer kernel-build kernel-clean-
 	@tput setaf 3
 	@echo "    done: all"
 	@tput sgr0
+
 clean: kernel-module-uninstall kernel-clean user-clean
 	@tput setaf 3
 	@echo "    done: clean"
@@ -17,11 +18,13 @@ kernel-build:
 	@echo "    kernel-build"
 	@tput sgr0
 	make -C /lib/modules/$(shell uname -r)/build M=$(PWD) modules
+
 kernel-clean:
 	@tput setaf 1
 	@echo "    kernel-clean"
 	@tput sgr0
 	make -C /lib/modules/$(shell uname -r)/build M=$(PWD) clean
+
 kernel-clean-temporary:
 	@tput setaf 1
 	@echo "    kernel-clean-temporary"
@@ -29,16 +32,19 @@ kernel-clean-temporary:
 	-rm -rf *.o *~ core .depend .*.cmd *.mod.c .tmp_versions
 	-rm -rf kern/*.o kern/*~ kern/core kern/.depend kern/.*.cmd kern/*.mod.c kern/.tmp_versions
 	-rm -rf Module.symvers modules.order
+
 kernel-module-install:
 	@tput setaf 1
 	@echo "    kernel-module-install"
 	@tput sgr0
 	-sudo insmod nl_kern.ko
+
 kernel-module-uninstall:
 	@tput setaf 1
 	@echo "    kernel-module-uninstall"
 	@tput sgr0
 	-sudo rmmod nl_kern
+
 kernel-clean-ring-buffer:
 	@tput setaf 1
 	@echo "    kernel-clean-ring-buffer"
@@ -52,6 +58,7 @@ user-build:
 	@echo "    user-build"
 	@tput sgr0
 	gcc user/nl_user.c -o nl_user.out
+	
 user-clean:
 	@tput setaf 1
 	@echo "    user-clean"

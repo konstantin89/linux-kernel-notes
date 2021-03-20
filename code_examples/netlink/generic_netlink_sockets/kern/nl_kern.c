@@ -2,8 +2,6 @@
 #include <linux/module.h>
 #include <linux/kernel.h>
 
-//Code based on http://people.ee.ethz.ch/~arkeller/linux/multi/kernel_user_space_howto-3.html
-
 
 int doc_exmpl_echo(struct sk_buff *skb_2, struct genl_info *info);
 
@@ -51,20 +49,18 @@ static struct genl_ops doc_exmpl_gnl_ops_echo =
  .dumpit = NULL,
 };
 
-
 #define VERSION_NR 1
+
 //family definition
-static struct genl_family doc_exmpl_gnl_family = {
- //.id = GENL_ID_GENERATE,         //Genetlink should generate an id // GENL_ID_GENERATE has been removed
+static struct genl_family doc_exmpl_gnl_family = 
+{
  .hdrsize = 0,
- .name = "CONTROL_EXMPL",        //The name of this family, used by userspace application
+ .name = "CONTROL_EXMPL",         //The name of this family, used by userspace application
  .version = VERSION_NR,          //Version number  
  .maxattr = DOC_EXMPL_A_MAX,
  .ops = &doc_exmpl_gnl_ops_echo,
  .n_ops = 1,
 };
-
-
 
 //An echo command, receives a message, prints it and sends another message back
 int doc_exmpl_echo(struct sk_buff *skb_2, struct genl_info *info) 
@@ -161,7 +157,6 @@ out:
 
 //Commands: mapping between the command enumeration and the actual function
 
-
 static int __init gnKernel_init(void) 
 {
     int rc;
@@ -174,35 +169,23 @@ static int __init gnKernel_init(void)
         goto failure;
     }
 
- //Register functions (commands) of the new family  
- /*rc = genl_register_ops(&doc_exmpl_gnl_family, &doc_exmpl_gnl_ops_echo);
-
- if (rc != 0) {
-    printk("Register ops: %i\n",rc);
-    genl_unregister_family(&doc_exmpl_gnl_family);
-    goto failure;
- }*/
-
- return 0; 
+    return 0; 
 
 failure:
     printk("An error occured while inserting the generic netlink example module\n");
     return -1;
 }
 
-static void __exit gnKernel_exit(void) {
- int ret;
- printk("Generic Netlink Example Module unloaded.\n");
- 
- //Unregister the functions
- /*ret = genl_unregister_ops(&doc_exmpl_gnl_family, &doc_exmpl_gnl_ops_echo); // Uncomment me
- if(ret != 0) {
-  printk("Unregister ops: %i\n",ret);
- }*/
-
+static void __exit gnKernel_exit(void) 
+{
+    int ret;
+    printk("Generic Netlink Example Module unloaded.\n");
+    
     //Unregister the family
     ret = genl_unregister_family(&doc_exmpl_gnl_family);
-    if(ret !=0) {
+    
+    if(ret !=0) 
+    {
         printk("Unregister family %i\n",ret);
         return;
     } 

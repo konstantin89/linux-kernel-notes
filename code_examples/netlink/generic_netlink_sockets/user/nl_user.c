@@ -13,7 +13,6 @@
 
 #include <linux/genetlink.h>
 
-//Code based on http://people.ee.ethz.ch/~arkeller/linux/multi/kernel_user_space_howto-3.html
 
 /* Generic macros for dealing with netlink sockets. Might be duplicated
  * elsewhere. It is recommended that commercial grade applications use
@@ -30,8 +29,10 @@ int nl_fd;  //netlink socket's file descriptor
 struct sockaddr_nl nl_address; //netlink socket address
 int nl_family_id; //The family ID resolved by the netlink controller for this userspace program
 int nl_rxtx_length; //Number of bytes sent or received via send() or recv()
-struct nlattr *nl_na; //pointer to netlink attributes structure within the payload 
-struct { //memory for netlink request and response messages - headers are included
+struct nlattr *nl_na; //pointer to netlink attributes structure within the payload
+
+struct  //memory for netlink request and response messages - headers are included
+{ 
     struct nlmsghdr n;
     struct genlmsghdr g;
     char buf[256];
@@ -42,8 +43,9 @@ int main(void)
 {
     //Step 1: Open the socket. Note that protocol = NETLINK_GENERIC
     nl_fd = socket(AF_NETLINK, SOCK_RAW, NETLINK_GENERIC);
-    if (nl_fd < 0) {
-        perror("socket()");
+    if (nl_fd < 0) 
+    {
+        perror("socket() failed");
         return -1;
     }
 
@@ -52,9 +54,11 @@ int main(void)
     nl_address.nl_family = AF_NETLINK;
     nl_address.nl_groups = 0;
 
-    if (bind(nl_fd, (struct sockaddr *) &nl_address, sizeof(nl_address)) < 0) 
+    int bindReturnValue = bind(nl_fd, (struct sockaddr *) &nl_address, sizeof(nl_address));
+
+    if (bindReturnValue < 0) 
     {
-        perror("bind()");
+        perror("bind() failed");
         close(nl_fd);
         return -1;
     }
@@ -90,7 +94,7 @@ int main(void)
 
     if (nl_rxtx_length != nl_request_msg.n.nlmsg_len) 
     {
-        perror("sendto()");
+        perror("sendto() failed");
         close(nl_fd);
         return -1;
     }
@@ -99,7 +103,7 @@ int main(void)
     nl_rxtx_length = recv(nl_fd, &nl_response_msg, sizeof(nl_response_msg), 0);
     if (nl_rxtx_length < 0) 
     {
-        perror("recv()");
+        perror("recv() failed");
         return -1;
     }
 
@@ -121,6 +125,7 @@ int main(void)
 
     if (nl_na->nla_type == CTRL_ATTR_FAMILY_ID) 
     {
+        printf("Recieved family ID: [%d] \n", nl_family_id);
         nl_family_id = *(__u16 *) NLA_DATA(nl_na);
     }
 
@@ -146,7 +151,8 @@ int main(void)
 
     //Send the custom message
     nl_rxtx_length = sendto(
-        nl_fd, (char *) &nl_request_msg, 
+        nl_fd, 
+        (char *) &nl_request_msg, 
         nl_request_msg.n.nlmsg_len,
         0, 
         (struct sockaddr *) &nl_address, 
@@ -170,8 +176,8 @@ int main(void)
     }
 
     //Validate response message
-    if (nl_response_msg.n.nlmsg_type == NLMSG_ERROR) 
-    { //Error
+    if (nl_response_msg.n.nlmsg_type == NLMSG_ERROR) //Error
+    { 
         printf("Error while receiving reply from kernel: NACK Received\n");
         close(nl_fd);
         return -1;
