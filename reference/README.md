@@ -13,26 +13,6 @@
 
 [Driver references](https://github.com/niekiran/linux-device-driver-1)
 
-</br>
-
-## Commands
-
-``` bash
-
-[uname -r] : Check the kernel version of the running host
-
-[sudo dmesg] : View kernel log messages
-
-[sudo insmod main.ko] : Install kernel module
-
-[sudo rmmod main.ko] : Uninstall kernel module
-
-[nm main.ko] : List symbols of object file
-
-
-```
-
-</br>
 
 ## Cloning kernel sources
 
