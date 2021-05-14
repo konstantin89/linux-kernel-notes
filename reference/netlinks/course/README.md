@@ -4,8 +4,8 @@
 
 [Course source code](https://github.com/konstantin89/UdemyCourseOnNetlink)
 
-</br>
 ---
+</br>
 
 ## Message Structure
 
@@ -14,8 +14,8 @@ The nlmsghdr is defined in [netlink.h](https://elixir.bootlin.com/linux/latest/s
 ```
 struct nlmsghdr {
     __u32        nlmsg_len;    /* Length of message including header */
-    __u16        nlmsg_type;    /* Message content */
-    __u16        nlmsg_flags;    /* Additional flags */
+    __u16        nlmsg_type;   /* Message content */
+    __u16        nlmsg_flags;  /* Additional flags */
     __u32        nlmsg_seq;    /* Sequence number */
     __u32        nlmsg_pid;    /* Sending process port ID */
 };
@@ -50,3 +50,55 @@ Here are some commonly used:
 
 ![](img/message_pid.PNG)
 
+
+---
+</br>
+
+
+## Netlink Protocol ID
+
+Unique protocol number is assigned to each Linux kernel  
+subsustem that is capable of using the Netlinks.  
+
+The list of all assigned IDs are defined in [netlink.h](https://elixir.bootlin.com/linux/latest/source/include/uapi/linux/netlink.h#L44) header.  
+
+
+---
+</br>
+
+
+## Socket Buffers (skbuff)
+
+Netlinks configuration struct as defined in [netlink.h](https://elixir.bootlin.com/linux/latest/source/include/uapi/linux/netlink.h#L44) has the following structure:  
+```
+struct netlink_kernel_cfg {
+    unsigned int groups;
+    unsigned int flags;
+    void (*input)(struct sk_buff *skb);
+    struct mutex *cb_mutex;
+    int (*bind)(struct net *net, int group);
+    void (*unbind)(struct net *net, int group);
+    bool (*compare)(struct net *net, struct sock *sk);
+```
+
+Note that input data callback has the following signature:  
+```
+void (*input)(struct sk_buff *skb)
+```
+
+`sk_buff` is structure that represents a socket buffer.  
+It is defined in [skbuff.h](https://elixir.bootlin.com/linux/latest/source/include/linux/skbuff.h) header file.  
+
+Two important fields are `data` and `len`.  
+Usage example:   
+```
+struct sk_buff *skb_in;
+unsigned char* data_pointer = skb_in->data;
+int message_length = skb_in->len;
+```
+
+For full code example please use [this](./../../../code_examples/netlink/netlink_course_examples/Greetings_example/kernel/greetNetlinkLKM.c) file.
+
+
+---
+</br>

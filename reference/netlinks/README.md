@@ -1,31 +1,23 @@
 # Netlinks
 
 ## Links 
+[Netlinks Course Reference](course/README.md)
 
 [Defining a new netlink protocol](https://www.linuxjournal.com/article/7356)    
 
 [Netlinks Fundamentals](https://www.infradead.org/~tgr/libnl/doc/core.html#core_netlink_fundamentals)  
 
 
+---
 </br>
 
-## libnl
-
-[Netlink Core - libnl documentation](https://www.infradead.org/~tgr/libnl/doc/core.html)
-
-Installing libnl on Debian machines:
-
-``` bash
- sudo apt-get install -y libnl-genl-3-dev 
-```
-
-</br>
 
 ## Generic netlink sockets
 
 Example:  `code_examples/generic_netlink_sockets`.   
 
 
+---
 </br>
 
 ## Adding new netlink protocol

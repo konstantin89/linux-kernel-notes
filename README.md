@@ -34,7 +34,7 @@ On other machines use:
 
 [uname -r] : Check the kernel version of the running host
 
-[sudo dmesg] : View kernel log messages
+[sudo dmesg -w] : View kernel log messages (-w for follow)  
 
 [sudo insmod main.ko] : Install kernel module
 
