@@ -1,10 +1,8 @@
 # Linux Kernel Notes
 
-
 ## Links
-
-[Linux kernel reference](reference/README.md)
-
+[Allot Kernel Course ](allot_kernel_course/README.md)  
+[Linux kernel reference](reference/README.md)  
 
 ---
 </br>
