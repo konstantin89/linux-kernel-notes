@@ -206,3 +206,28 @@ int request_threaded_irq (
  	const char * devname,
  	void * dev_id);
 ```
+
+## Interrupt handling mechanisms latency
+
+Here are the mechanisms for handling work from interrupts sorted by latency:  
+`Tasklets` - Lowest latency  
+`Threaded interrupts` - Medium latency   
+`Work queues` - Longest latency    
+
+
+## Top and Bottom halves
+
+Top and bottom halves are mechanism that used to solve the same problem as the  
+threaded interrupt handler.  
+Instead of the thread, tasklets are used here.  
+
+`tesklets.c` a basic code example that calculates the time between the IRQ  
+call and the tasklet run.
+
+
+## Work queues
+Work queues mechanism can be used to schedule work.
+
+In work_queues.c example, we move the heavy work on interrupt to work queue.  
+The performace of this method are 10 times slower than in the previous example  
+that is using tasklets.
