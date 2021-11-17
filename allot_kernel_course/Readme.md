@@ -231,3 +231,4 @@ Work queues mechanism can be used to schedule work.
 In work_queues.c example, we move the heavy work on interrupt to work queue.  
 The performace of this method are 10 times slower than in the previous example  
 that is using tasklets.
+
