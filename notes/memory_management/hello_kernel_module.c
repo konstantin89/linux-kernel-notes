@@ -123,21 +123,24 @@ static void VirtToPhys(void)
     printk(KERN_INFO "kmalloc Kernel logical address - Physical mapping = [0x%x]", diff);
 
     physAddr = virt_to_phys(vmalloc_buffer);
-    printk(KERN_INFO "vmalloc Kernel logical address -> Physical: [%p]->[0x%x]", 
+    printk(KERN_INFO "vmalloc Kernel virtual address -> Physical: [%p]->[0x%x]", 
            vmalloc_buffer, physAddr);
     
     diff = vmalloc_buffer - physAddr;
-    printk(KERN_INFO "vmalloc Kernel logical address - Physical mapping = [0x%x]", diff);
+    printk(KERN_INFO "vmalloc Kernel virtual address - Physical mapping = [0x%x]", diff);
 
     // Example output:
     // [98324.519404] kmalloc Kernel logical address -> Physical: [a4534e74]->[0x3997c00]
     // [98324.519422] kmalloc Kernel logical address - Physical mapping = [0x80000000]
-    // [98324.519432] vmalloc Kernel logical address -> Physical: [d4c6f648]->[0x3b84e000]
-    // [98324.519444] vmalloc Kernel logical address - Physical mapping = [0x80000000]
+    // [98324.519432] vmalloc Kernel virtual address -> Physical: [d4c6f648]->[0x3b84e000]
+    // [98324.519444] vmalloc Kernel virtual address - Physical mapping = [0x80000000]
 
     // From "Linux device drivers - Chapter 15"
     // Kernel logical address is the address in kernel space
     // Note that kernel logical address and physical address are diff only by const value!
+    // This property is not necessary stands for kernel virtual addresses.
+    // kmalloc allocates Kernel logical address.
+    // vmalloc allocates Kernel virtual address. 
 
     // sudo cat /proc/iomem content:
     //
