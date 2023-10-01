@@ -1,7 +1,22 @@
 obj-m := main.o
 
+KDIR := /lib/modules/$(shell uname -r)/build
+PWD := $(shell pwd)
+
 all:
-	make -C /usr/lib/modules/4.19.0-12-amd64/build M=$(PWD) modules
+	$(MAKE) -C $(KDIR) M=$(PWD) modules
 
 clean:
-	make -C /usr/lib/modules/4.19.0-12-amd64/build M=$(PWD) clean
+	$(MAKE) -C $(KDIR) M=$(PWD) clean
+
+i:
+	sudo insmod main.ko
+
+u:
+	sudo rmmod main.ko
+
+log:
+	sudo dmesg -w
+
+ls:
+	sudo lsmod

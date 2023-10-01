@@ -5,6 +5,9 @@
 #include<linux/kdev_t.h>
 #include<linux/uaccess.h>
 
+MODULE_LICENSE("GPL");
+MODULE_AUTHOR("Kosta");
+MODULE_DESCRIPTION("example character device");
 
 #undef pr_fmt
 #define pr_fmt(fmt) "%s : " fmt,__func__
